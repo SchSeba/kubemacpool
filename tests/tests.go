@@ -2,8 +2,9 @@ package tests
 
 import (
 	"fmt"
-	"k8s.io/apimachinery/pkg/util/rand"
 	"time"
+
+	"k8s.io/apimachinery/pkg/util/rand"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -23,12 +24,11 @@ import (
 )
 
 const (
-	TestNamespace = "kubemacpool-test"
+	TestNamespace      = "kubemacpool-test"
 	OtherTestNamespace = "kubemacpool-test-alternative"
 
-	postUrl              = "/apis/k8s.cni.cncf.io/v1/namespaces/%s/network-attachment-definitions/%s"
-	ovsConfCRD           = `{"apiVersion":"k8s.cni.cncf.io/v1","kind":"NetworkAttachmentDefinition","metadata":{"name":"%s","namespace":"%s"},"spec":{"config":"{ \"cniVersion\": \"0.3.1\", \"type\": \"ovs\", \"bridge\": \"br1\", \"vlan\": 100 }"}}`
-
+	postUrl    = "/apis/k8s.cni.cncf.io/v1/namespaces/%s/network-attachment-definitions/%s"
+	ovsConfCRD = `{"apiVersion":"k8s.cni.cncf.io/v1","kind":"NetworkAttachmentDefinition","metadata":{"name":"%s","namespace":"%s"},"spec":{"config":"{ \"cniVersion\": \"0.3.1\", \"type\": \"ovs\", \"bridge\": \"br1\", \"vlan\": 100 }"}}`
 )
 
 var testClient *TestClient
@@ -40,7 +40,7 @@ type TestClient struct {
 
 func NewTestClient() (*TestClient, error) {
 	t := &envtest.Environment{
-		UseExistingCluster:true,
+		UseExistingCluster: true,
 	}
 
 	var cfg *rest.Config
@@ -69,16 +69,16 @@ func NewTestClient() (*TestClient, error) {
 }
 
 func createTestNamespaces() error {
-	_, err := testClient.KubeClient.CoreV1().Namespaces().Create(&v1.Namespace{ObjectMeta:v12.ObjectMeta{Name:TestNamespace}})
+	_, err := testClient.KubeClient.CoreV1().Namespaces().Create(&v1.Namespace{ObjectMeta: v12.ObjectMeta{Name: TestNamespace}})
 	if err != nil {
 		return err
 	}
-	_, err = testClient.KubeClient.CoreV1().Namespaces().Create(&v1.Namespace{ObjectMeta:v12.ObjectMeta{Name:OtherTestNamespace}})
+	_, err = testClient.KubeClient.CoreV1().Namespaces().Create(&v1.Namespace{ObjectMeta: v12.ObjectMeta{Name: OtherTestNamespace}})
 	return err
 }
 
 func deleteTestNamespaces(namespace string) error {
-	return testClient.KubeClient.CoreV1().Namespaces().Delete(namespace,&v12.DeleteOptions{})
+	return testClient.KubeClient.CoreV1().Namespaces().Delete(namespace, &v12.DeleteOptions{})
 }
 
 func removeTestNamespaces() {
@@ -91,11 +91,11 @@ func removeTestNamespaces() {
 		Should(BeTrue())
 }
 
-func CreateVmObject(namespace string,running bool, interfaces []kubevirtv1.Interface,networks []kubevirtv1.Network) (*kubevirtv1.VirtualMachine) {
+func CreateVmObject(namespace string, running bool, interfaces []kubevirtv1.Interface, networks []kubevirtv1.Network) *kubevirtv1.VirtualMachine {
 	vm := kubevirtutils.GetVMCirros()
-	vm.Name = "testvm"+rand.String(32)
+	vm.Name = "testvm" + rand.String(32)
 	vm.Namespace = namespace
-	vm.Spec.Running = running
+	vm.Spec.Running = &running
 	vm.Spec.Template.Spec.Domain.Devices.Interfaces = interfaces
 	vm.Spec.Template.Spec.Networks = networks
 

@@ -7,7 +7,6 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-
 func TestTests(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Tests Suite")

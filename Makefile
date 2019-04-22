@@ -34,11 +34,11 @@ manifests:
 
 # Run go fmt against code
 fmt:
-	go fmt ./pkg/... ./cmd/...
+	go fmt ./pkg/... ./cmd/... ./tests/...
 
 # Run go vet against code
 vet:
-	go vet ./pkg/... ./cmd/...
+	go vet ./pkg/... ./cmd/... ./tests/...
 
 # Generate code
 generate: fmt vet manifests
